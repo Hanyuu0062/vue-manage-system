@@ -10,9 +10,67 @@ const form = ref({ uid: 'admin', password: '123456', confirm: '' })
 const buttonInfo = ref('登录')
 const signFlag = ref(false)
 
-const login = () => {
-    router.push('/')
-    console.log(uid.value)
+// 表单校验规则
+const checkPassword = (rule, value, callback) => {
+    if (value == '') {
+        callback(new Error("请再次确认密码"))
+    } else if (value != form.value.password) {
+        callback(new Error("两次输入的密码不一致"))
+    } else {
+        callback()
+    }
+}
+
+const rules = {
+    // rules里的名字要跟输入的名字一致
+    uid: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { min: 3, max: 16, message: '输入的长度有误', trigger: 'blur' }
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 3, max: 16, message: '输入的长度有误', trigger: 'blur' }
+    ],
+    confirm: [
+        { validator: checkPassword, trigger: 'blur' }
+    ]
+}
+
+// 按钮的切换
+const button_login = ref('switch-a');
+const button_sign = ref('switch-b');
+const switchButton = (submit) => {
+    if (signFlag.value && !submit) {
+        // 处于注册 点击登录
+        signFlag.value = false;
+        buttonInfo.value = '登录';
+        button_login.value = 'switch-a';
+        button_sign.value = 'switch-b';
+    } else if (!signFlag.value && submit) {
+        // 处于登录 点击注册
+        signFlag.value = true;
+        buttonInfo.value = '注册';
+        button_login.value = 'switch-b';
+        button_sign.value = 'switch-a';
+    }
+}
+
+// 登录和注册
+import { loginService } from '@/api/login.js'
+const login_sign = async () => {
+    if (signFlag.value) {
+        // 注册
+        let res;
+    } else {
+        // 登录
+        let loginForm={
+            uid:form.value.uid,
+            password:form.value.password
+        }
+        let res = await loginService(loginForm)
+        ElMessage.success(res.message)
+        router.push('/')
+    }
 };
 
 </script>
@@ -23,22 +81,23 @@ const login = () => {
         <div class="main-container">
             <el-container>
                 <el-header>
-                    <button class="switch-b" @click="signFlag = false; buttonInfo = '登录'">登录</button>
+                    <button :class="button_login" @click="switchButton(false)">登录</button>
                     /
-                    <button class="switch-b" @click="signFlag = true; buttonInfo = '注册'">注册</button>
+                    <button :class="button_sign" @click="switchButton(true)">注册</button>
                 </el-header>
                 <el-main>
-                    <el-form :model="form" label-width="80px">
-                        <el-form-item label="用户名">
+                    <el-form :model="form" :rules="rules" label-width="80px">
+                        <el-form-item label="用户名" prop="uid">
                             <el-input v-model="form.uid" placeholder="请输入用户名" />
                         </el-form-item>
-                        <el-form-item label="密码">
+                        <el-form-item label="密码" prop="password">
                             <el-input type="password" v-model="form.password" />
                         </el-form-item>
-                        <el-form-item label="确认密码" v-if="signFlag">
-                            <el-input v-model="form.confirm" />
+                        <el-form-item label="确认密码" v-if="signFlag" prop="confirm">
+                            <el-input type="password" v-model="form.confirm" />
                         </el-form-item>
-                        <div align='center'><el-button type="primary" @click="login"> {{ buttonInfo }}</el-button></div>
+                        <div align='center'><el-button type="primary" @click="login_sign"> {{ buttonInfo }}</el-button>
+                        </div>
                     </el-form>
                 </el-main>
                 <el-footer>期末作业 2023 Created by Hanyuu</el-footer>
@@ -98,6 +157,13 @@ const login = () => {
 }
 
 /* 登录 注册按钮 */
+.switch-a {
+    color: #EEC0DA;
+    font-size: 3rem;
+    border: none;
+    background-color: transparent;
+}
+
 .switch-b {
     color: #567CBE;
     font-size: 3rem;
@@ -116,6 +182,5 @@ const login = () => {
     margin: 30px;
     border-radius: 30px;
 }
-
 </style>
 

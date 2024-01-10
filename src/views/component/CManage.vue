@@ -14,7 +14,7 @@ const pageSize = ref(10)
 const total = ref()
 const courseForm = ref({
     id: '',
-    name: '',
+    cname: '',
     teacher: '',
     credit: ''
 })
@@ -37,7 +37,7 @@ const courseGet = async () => {
         pageNum: pageNum.value,
         pageSize: pageSize.value,
         id: courseID.value ? courseID.value : null,
-        name: courseName.value ? courseName.value : null
+        cname: courseName.value ? courseName.value : null
     }
     let res = await courseGetService(params)
     courseData.value = res.data.list
@@ -61,7 +61,7 @@ const toEdit = (info) => {
 const toAdd = () => {
     courseForm.value = {
         id: '',
-        name: '',
+        cname: '',
         teacher: '',
         credit: ''
     }
@@ -89,10 +89,9 @@ const hindleClose = () => {
     visible.value = false
     courseForm.value = {
         'id': '',
-        'name': '',
-        'sex': '',
-        'age': '',
-        'dep': ''
+        'cname': '',
+        'teacher': '',
+        'credit': ''
     }
 }
 
@@ -118,7 +117,7 @@ courseGet();
 
         <el-table :data="courseData" style="width: 100%">
             <el-table-column label="课程号" prop="id" width="180"> </el-table-column>
-            <el-table-column label="课程名" prop="name" width="180"> </el-table-column>
+            <el-table-column label="课程名" prop="cname" width="180"> </el-table-column>
             <el-table-column label="教师" prop="teacher" width="180"> </el-table-column>
             <el-table-column label="学分" prop="credit" width="180"> </el-table-column>
             <el-table-column label="编辑">
@@ -140,7 +139,7 @@ courseGet();
                 <el-input v-model="courseForm.id" placeholder="课程号会自动生成" :disabled="true" />
             </el-form-item>
             <el-form-item label="课程名">
-                <el-input v-model="courseForm.name" placeholder="请输入课程名" />
+                <el-input v-model="courseForm.cname" placeholder="请输入课程名" />
             </el-form-item>
             <el-form-item label="教师名">
                 <el-input v-model="courseForm.teacher" placeholder="请输入教师名" />

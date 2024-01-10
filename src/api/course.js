@@ -15,7 +15,3 @@ export function courseAdd(Form) {
 export function courseUp(Form) {
     return request.post('/course/edit', Form)
 }
-
-export function CourseMap() {
-    return request.get('/course/map')
-}

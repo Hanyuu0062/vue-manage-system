@@ -16,7 +16,3 @@ export function StuAdd(Form) {
 export function StuUp(Form) {
     return request.post('/student/edit', Form)
 }
-
-export function StuMap(){
-    return request.get('/student/map')
-}

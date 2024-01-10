@@ -27,31 +27,7 @@ const handleCurrentChange = (newNum) => {
     scGet()
 }
 
-
-// 拉取学生 课程信息
-import { StuMap } from '@/api/stu.js'
-import { CourseMap } from '@/api/course.js'
-
-const stuMap = ref({});
-const courseMap = ref({});
-
-const getInfo = async () => {
-    const pmA = StuMap()
-    const pmB = CourseMap()
-    let [resA, resB] = await Promise.all([pmA, pmB]);
-    stuMap.value = resA.data
-    courseMap.value = resB.data
-}
-
-// 处理显示
-const tableDeal = () => {
-    for (let i = 0; i < scData.value.length; ++i) {
-        scData.value[i].sname = stuMap.value[scData.value[i].sid]
-        scData.value[i].cname = courseMap.value[scData.value[i].cid]
-    }
-}
-
-// 拉取学生信息
+// 拉取选课信息
 import { scGetService, del } from '@/api/sc.js'
 
 const scGet = async () => {
@@ -65,7 +41,7 @@ const scGet = async () => {
     let res = await scGetService(params)
     scData.value = res.data.list
     total.value = res.data.total
-    tableDeal()
+    // tableDeal()
 }
 
 // 删除
@@ -113,7 +89,6 @@ const hindleClose = () => {
     visible.value = false
 }
 
-getInfo();
 scGet();
 </script>
 
@@ -139,7 +114,7 @@ scGet();
             <el-table-column label="课程名" prop="cname" width="180"> </el-table-column>
             <el-table-column label="课程号" prop="cid" width="180"> </el-table-column>
             <el-table-column label="学号" prop="sid" width="180"> </el-table-column>
-            <el-table-column label="姓名" prop="sname" width="180"> </el-table-column>
+            <el-table-column label="姓名" prop="name" width="180"> </el-table-column>
             <el-table-column label="得分" prop="pts" width="180"> </el-table-column>
             <el-table-column label="编辑">
                 <template #default="{ row }">
