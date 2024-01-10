@@ -43,9 +43,9 @@ npm run build
 
 ### 登录
 
-![Image text]()
+![Image text](https://github.com/Hanyuu0062/vue-manage-system/blob/master/pic/login.png?raw=true)
 
 ### 首页
 
-![Image text]()
+![Image text](https://github.com/Hanyuu0062/vue-manage-system/blob/master/pic/main.png?raw=true)
 
