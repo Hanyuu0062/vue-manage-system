@@ -5,7 +5,8 @@ import { useRouter } from 'vue-router'
 import {
     UserFilled,
     Reading,
-    Document
+    Document,
+    ArrowDown
 } from '@element-plus/icons-vue'
 
 const head_msg = ref('云南大学-学生课程管理系统');
@@ -14,6 +15,11 @@ const head_msg = ref('云南大学-学生课程管理系统');
 const router_ = useRouter();
 //  router.push(/)
 
+const handleCommand = (command) => {
+    if (command == 'logout') {
+        router_.push("/login")
+    }
+}
 </script>
 
 <template>
@@ -22,7 +28,7 @@ const router_ = useRouter();
 
         <!-- 左侧菜单 -->
         <el-aside width="225px">
-            <div class="el-aside__logo"></div>
+            <div class="el-aside__logo" @click="router_.push('/')"></div>
 
             <el-menu text-color="#fff" background-color="#232323" router>
 
@@ -54,6 +60,22 @@ const router_ = useRouter();
             <!-- 头部区域 -->
             <el-header>
                 {{ head_msg }}
+                <el-dropdown @command="handleCommand">
+                    <span class="el-dropdown-link">
+                        <el-avatar :size="50" :src="circleUrl" margin-right="30px"/>
+                        <el-icon class="el-icon--right">
+                            <arrow-down />
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item command="">修改资料</el-dropdown-item>
+                            <el-dropdown-item>修改密码</el-dropdown-item>
+                            <el-dropdown-item>重置密码</el-dropdown-item>
+                            <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </el-header>
 
             <!-- 中间区域 -->
@@ -69,6 +91,13 @@ const router_ = useRouter();
 </template>
 
 <style lang="scss" scoped>
+.el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary);
+    display: flex;
+    align-items: center;
+}
+
 .layout-container {
     height: 100vh;
 

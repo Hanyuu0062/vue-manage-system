@@ -57,18 +57,21 @@ const switchButton = (submit) => {
 
 // 登录和注册
 import { loginService } from '@/api/login.js'
+import { useTokenStore } from '@/stores/token.js'
+const tokenStore = useTokenStore()
 const login_sign = async () => {
     if (signFlag.value) {
         // 注册
         let res;
     } else {
         // 登录
-        let loginForm={
-            uid:form.value.uid,
-            password:form.value.password
+        let loginForm = {
+            uid: form.value.uid,
+            password: form.value.password
         }
         let res = await loginService(loginForm)
         ElMessage.success(res.message)
+        tokenStore.setToken(res.data)
         router.push('/')
     }
 };
